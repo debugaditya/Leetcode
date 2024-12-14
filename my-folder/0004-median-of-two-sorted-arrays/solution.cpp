@@ -1,46 +1,33 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        // Ensure nums1 is the smaller array
-        if (nums1.size() > nums2.size()) {
-            return findMedianSortedArrays(nums2, nums1);
-        }
-
-        int n1 = nums1.size();
-        int n2 = nums2.size();
-        int low = 0, high = n1;
-
-        while (low <= high) {
-            int partition1 = (low + high) / 2;
-            int partition2 = (n1 + n2 + 1) / 2 - partition1;
-
-            // Handle edge cases where partitions are out of bounds
-            int maxLeft1 = (partition1 == 0) ? INT_MIN : nums1[partition1 - 1];
-            int minRight1 = (partition1 == n1) ? INT_MAX : nums1[partition1];
-
-            int maxLeft2 = (partition2 == 0) ? INT_MIN : nums2[partition2 - 1];
-            int minRight2 = (partition2 == n2) ? INT_MAX : nums2[partition2];
-
-            // Check if we have the correct partition
-            if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
-                // If total number of elements is odd
-                if ((n1 + n2) % 2 == 1) {
-                    return max(maxLeft1, maxLeft2);
-                } else {
-                    // If total number of elements is even
-                    return (max(maxLeft1, maxLeft2) + min(minRight1, minRight2)) / 2.0;
-                }
-            } else if (maxLeft1 > minRight2) {
-                // Move left in nums1
-                high = partition1 - 1;
-            } else {
-                // Move right in nums1
-                low = partition1 + 1;
+        int n1=nums1.size();
+        int n2=nums2.size();
+        if(n1>n2) return findMedianSortedArrays(nums2,nums1);
+        int left=(n1+n2)/2;
+        int l=0;
+        int r=n1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            int l1=mid-1;
+            int l2=left-mid-1;
+            int r1=mid;
+            int r2=left-mid;
+            int nl1=INT_MIN;
+            int nl2=INT_MIN;
+            int nr1=INT_MAX;
+            int nr2=INT_MAX;
+            if(l1!=-1) nl1=nums1[l1]; 
+            if(l2!=-1) nl2=nums2[l2];
+            if(r1!=n1) nr1=nums1[r1];
+            if(r2!=n2) nr2=nums2[r2];
+            if(max(nl1,nl2)<=min(nr1,nr2)){
+                if((n1+n2)%2==1) return min(nr1,nr2);
+                return (max(nl1,nl2)+min(nr1,nr2))/2.0;
             }
+            else if(nl1==max(nl1,nl2)) r=mid-1;
+            else l=mid+1;
         }
-
-        // If input is invalid
-        throw invalid_argument("Input arrays are not sorted.");
+        return 0;
     }
 };
-
