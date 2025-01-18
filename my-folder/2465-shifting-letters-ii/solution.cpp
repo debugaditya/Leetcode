@@ -3,8 +3,6 @@ public:
     string shiftingLetters(string s, vector<vector<int>>& shifts) {
         int n = s.size();
         vector<int> shiftEffect(n + 1, 0);
-
-        // Process shifts and record the cumulative effect
         for (const auto& shift : shifts) {
             int start = shift[0], end = shift[1], direction = shift[2];
             if (direction == 1) {
