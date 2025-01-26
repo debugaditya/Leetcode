@@ -1,44 +1,45 @@
 class Solution {
 public:
-int maxi(vector<int>arr){
-	int t=INT_MIN;
-	for(int j=0;j<arr.size();j++){
-		t=max(t,arr[j]);
-	}
-	return t;
-}
-int f(vector<int> arr, int a,int k){
-	int z=0;
-	int cnt=0;
-	for(int i=0;i<arr.size();i++){
-		if(arr[i]<=a){
-			z++;
-		}
-		else{
-			cnt+=(z/k);
-			z=0;
-		}
-	}
-	cnt+=z/k;
-	return cnt;
-}
-    int minDays(vector<int>& bloomDay, int m, int k) {
-        int l=1;
-        int r=maxi(bloomDay);
-	    int ans=-1;
-        while(l<=r){
-            int mid=(l+r)/2;
-		    vector<int>temp(bloomDay.begin(),bloomDay.end());
-		    int q=f(temp,mid,k);
-		    if(q>=m){
-                ans=mid;
-			    r=mid-1;
-		}
-		else{
-			l=mid+1;
-		}
-	}
-	return ans;
+    int minDays(vector<int>& bloom, int m, int k) {
+        // If it's impossible to form m bouquets, return -1
         
+
+        // Find the minimum and maximum bloom days
+        int low = *min_element(bloom.begin(), bloom.end());
+        int high = *max_element(bloom.begin(), bloom.end());
+        int ans = -1;
+
+        // Binary search for the minimum day
+        while (low <= high) {
+            int mid = (high + low) / 2;
+
+            int bouquet = 0;  // Number of bouquets formed
+            int counter = 0;  // Count of consecutive flowers ready
+
+            for (int days : bloom) {
+                if (days <= mid) {
+                    counter++;
+                    if (counter == k) {
+                        bouquet++;
+                        counter = 0;  // Reset after forming a bouquet
+                    }
+                } else {
+                    counter = 0;  // Reset if flower isn't ready
+                }
+
+                if (bouquet >= m) break;  // Early exit if condition met
+            }
+
+            // Adjust binary search range
+            if (bouquet >= m) {
+                ans = mid;
+                high = mid - 1;  // Look for a smaller day
+            } else {
+                low = mid + 1;  // Look for a larger day
+            }
+        }
+
+        return ans;
     }
 };
+
