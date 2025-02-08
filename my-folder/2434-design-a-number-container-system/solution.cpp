@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class NumberContainers {
+public:
+    unordered_map<int, int> index_to_number;
+    map<int, set<int>> number_to_indices; // Using map to maintain order
+
+    NumberContainers() {}
+
+    void change(int index, int number) {
+        if (index_to_number.count(index)) {
+            int old_number = index_to_number[index];
+            number_to_indices[old_number].erase(index);
+            if (number_to_indices[old_number].empty()) {
+                number_to_indices.erase(old_number);
+            }
+        }
+
+        index_to_number[index] = number;
+        number_to_indices[number].insert(index);
+    }
+
+    int find(int number) {
+        if (number_to_indices.count(number) && !number_to_indices[number].empty()) {
+            return *number_to_indices[number].begin(); // Return smallest index
+        }
+        return -1;
+    }
+};
+
