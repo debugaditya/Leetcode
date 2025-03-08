@@ -1,36 +1,33 @@
 class Solution {
 public:
-    void f(TreeNode* root, vector<TreeNode*>& v) {
-        if (!root) return;
-        f(root->left, v);
-        v.push_back(root);
-        f(root->right, v);
+    void inorder(TreeNode* root,map<int,TreeNode*>&mp,vector<int>&v){
+        if(!root) return;
+        inorder(root->left,mp,v);
+        v.push_back(root->val);
+        mp[root->val]=root;
+        inorder(root->right,mp,v);
         return;
     }
-
     void recoverTree(TreeNode* root) {
-        vector<TreeNode*> v;
-        f(root, v);
-
-        TreeNode* first = nullptr;
-        TreeNode* second = nullptr;
-
-        for (int i = 0; i < v.size() - 1; ++i) {
-            if (v[i]->val > v[i + 1]->val) {
-                if (!first) {
-                    first = v[i];
-                    second=v[i+1];
-                }    
-                else second=v[i+1];            
+        map<int,TreeNode*>mp;
+        vector<int>v;
+        inorder(root,mp,v);
+        vector<int>duplicate(v.begin(),v.end());
+        sort(duplicate.begin(),duplicate.end());
+        int a;
+        int b;
+        bool d= false;
+        for(int i=0;i<v.size();i++){
+            if(duplicate[i]!=v[i]&&!d){
+                d=true;
+                a=v[i];
+            }
+            else if(duplicate[i]!=v[i]&&d){
+                b=v[i];
+                break;
             }
         }
-
-        
-        if (first && second) {
-            swap(first->val, second->val);
-        }
+        swap(mp[a]->val,mp[b]->val);
         return;
     }
 };
-
-
