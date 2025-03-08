@@ -1,33 +1,34 @@
 class Solution {
 public:
-    bool check(int n) {
-    if (n < 2) return false;
-    if (n == 2 || n == 3) return true;
-    if (n % 2 == 0 || n % 3 == 0) return false;
-
-    int i = 5;
-    while (i * i <= n) {
-        if (n % i == 0 || n % (i + 2) == 0)
-            return false;
-        i += 6;
-    }
-    return true;
-}
     vector<int> closestPrimes(int left, int right) {
-        int mini=INT_MAX;
         vector<int>ans;
-        int num1=-1;
-        for(int i=left;i<=right;i++){
-            if(check(i)){
-                if(num1==-1) num1=i;
+        if(right<3){
+            ans.push_back(-1);
+            ans.push_back(-1);
+            return ans;
+        }
+        vector<int>primes(right-1,1);
+        for(int i=0;i<right-1;i++){
+            if(primes[i]==0) continue;
+            long long start = (long long)(i + 2) * (i + 2);
+            for(long long j=start-2;j<right-1;j+=i+2){
+                primes[j]=0;
+            }
+        }
+        int prev=-1;
+        
+        int mini=INT_MAX;
+        for(int i=max(0,left-2);i<=right-2;i++){
+            if(primes[i]==1){
+                if(prev==-1) prev=i+2;
                 else{
-                    if(i-num1<mini){
-                        mini=i-num1;
+                    if(mini>i+2-prev){
                         ans.clear();
-                        ans.push_back(num1);
-                        ans.push_back(i);
+                        ans.push_back(prev);
+                        ans.push_back(i+2);
+                        mini=i+2-prev;
                     }
-                    num1=i;
+                    prev=i+2;
                 }
             }
         }
