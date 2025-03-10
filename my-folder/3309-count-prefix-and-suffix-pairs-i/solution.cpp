@@ -2,7 +2,7 @@ class Solution {
 public:
     int countPrefixSuffixPairs(vector<string>& words) {
         vector<string> st1;
-        map<int,set<string>> st2;
+        unordered_map<int,set<string>> st2;
         for (int i = 0; i < words.size(); i++) {
             st1.push_back(words[i]);
             st2[i].insert(words[i]);
