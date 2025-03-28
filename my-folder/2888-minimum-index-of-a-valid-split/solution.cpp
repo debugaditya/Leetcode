@@ -1,30 +1,28 @@
 class Solution {
 public:
     int minimumIndex(vector<int>& nums) {
-        unordered_map<int, int> freq1, freq2;
-        vector<int> mp1(nums.size(), -1), mp2(nums.size(), -1);
-        int dom1 = -1, dom2 = -1;
-
-        // Left to Right Pass (Find dominant elements at each index)
-        for (int i = 0; i < nums.size(); i++) {
+        map<int,int>freq1;
+        map<int,int>freq2;
+        map<int,int>mp1;
+        map<int,int>mp2;
+        int dom1;
+        int dom2;
+        for(int i=0;i<nums.size();i++){
             freq1[nums[i]]++;
-            if (freq1[nums[i]] > (i + 1) / 2) dom1 = nums[i];
-            if (freq1[dom1] > (i + 1) / 2) mp1[i] = dom1;
+            if(freq1[nums[i]]>(i+1)/2) dom1=nums[i];
+            if(freq1[dom1]>(i+1)/2) mp1[i]=dom1;
+            else mp1[i]=-1;
         }
-
-        // Right to Left Pass (Find dominant elements at each index)
-        for (int i = nums.size() - 1; i >= 0; i--) {
+        for(int i=nums.size()-1;i>=0;i--){
             freq2[nums[i]]++;
-            if (freq2[nums[i]] > (nums.size() - i) / 2) dom2 = nums[i];
-            if (freq2[dom2] > (nums.size() - i) / 2) mp2[i] = dom2;
+            if(freq2[nums[i]]>(nums.size()-i)/2) dom2=nums[i];
+            if(freq2[dom2]>(nums.size()-i)/2) mp2[i]=dom2;
+            else mp2[i]=-1;
         }
-
-        // Finding the Minimum Index where Dominant Elements Match
-        for (int i = 0; i < nums.size() - 1; i++) {
-            if (mp1[i] != -1 && mp2[i + 1] != -1 && mp1[i] == mp2[i + 1])
-                return i;
+        for(int i=0;i<nums.size()-1;i++){
+            if(mp1[i]==-1||mp2[i+1]==-1) continue;
+            if(mp1[i]==mp2[i+1]) return i;
         }
         return -1;
     }
 };
-
