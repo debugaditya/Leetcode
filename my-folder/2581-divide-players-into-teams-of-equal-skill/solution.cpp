@@ -2,7 +2,7 @@ class Solution {
 public:
     long long dividePlayers(vector<int >& skill) {
         sort(skill.begin(),skill.end());
-        long long j=skill.size();
+        int j=skill.size();
         long long  d=skill[0]+skill[j-1];
         long long  l=1;
         long long  r=j-2;
@@ -12,14 +12,9 @@ public:
                 sum+=skill[l]*skill[r];
                 l++;
                 r--;
-
             }
-            else{
-                return -1;
-            }
+            else return -1;
         }
         return sum;
-
-        
     }
 };
