@@ -1,31 +1,23 @@
 class Solution {
 public:
-	string countAndSay(int n) {
-        if(n==1){
-            return "1";
+    string RLE(string s){
+        int size=1;
+        string ans="";
+        for(int i=0;i<s.size()-1;i++){
+            if(s[i]==s[i+1]) size++;
+            else{
+                ans += to_string(size);
+                ans+=s[i];
+                size=1;
+            }
         }
-		int z=2;
-		string ans="1";
-		while(n>=z) {
-            string u=ans;
-            ans="";
-			int cnt=1;
-			int t=0;
-			for(int i=0; i<u.size()-1; i++) {
-				if(u[i]==u[i+1]) {
-					cnt++;
-				}
-				else {
-					ans+=to_string(cnt);
-					ans+=u[i];
-                    cnt=1;
-				}
-			}
-            ans+=to_string(cnt);
-            ans+=u[u.size()-1];
-            z++;
-		}
+        ans+=to_string(size);
+        ans+=s[s.size()-1];
         return ans;
-
-	}
+    }
+    string countAndSay(int n) {
+        string  temp="1";
+        for(int i=1;i<n;i++) temp=RLE(temp);
+        return temp;
+    }
 };
