@@ -1,40 +1,24 @@
-#include <iostream>
-#include <vector>
-
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        if (n <= 0) return 0; // edge case
-        if (n == 1) return 1;  // the first ugly number is 1
+        vector<long long> ugly(n);
+        ugly[0] = 1;
+        int i2 = 0, i3 = 0, i5 = 0;
 
-        std::vector<int> uglyNumbers(n);
-        uglyNumbers[0] = 1;
+        for(int i = 1; i < n; ++i) {
+            long long next2 = ugly[i2] * 2;
+            long long next3 = ugly[i3] * 3;
+            long long next5 = ugly[i5] * 5;
 
-        int i2 = 0, i3 = 0, i5 = 0; // pointers for multiples of 2, 3, and 5
-        int nextMultipleOf2 = 2;
-        int nextMultipleOf3 = 3;
-        int nextMultipleOf5 = 5;
-        
-        for (int i = 1; i < n; ++i) {
-            int nextUgly = std::min({nextMultipleOf2, nextMultipleOf3, nextMultipleOf5});
-            uglyNumbers[i] = nextUgly;
+            long long next = min({next2, next3, next5});
+            ugly[i] = next;
 
-            // Update multiples of 2, 3, and 5
-            if (nextUgly == nextMultipleOf2) {
-                i2++;
-                nextMultipleOf2 = uglyNumbers[i2] * 2;
-            }
-            if (nextUgly == nextMultipleOf3) {
-                i3++;
-                nextMultipleOf3 = uglyNumbers[i3] * 3;
-            }
-            if (nextUgly == nextMultipleOf5) {
-                i5++;
-                nextMultipleOf5 = uglyNumbers[i5] * 5;
-            }
+            if(next == next2) i2++;
+            if(next == next3) i3++;
+            if(next == next5) i5++;
         }
 
-        return uglyNumbers[n - 1];
+        return ugly[n - 1];
     }
 };
 
