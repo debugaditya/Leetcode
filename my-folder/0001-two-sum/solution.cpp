@@ -5,11 +5,7 @@ public:
         unordered_set<int>st;
         vector<int>ans;
         for(int i=0;i<nums.size();i++){
-            if(st.find(target-nums[i])!=st.end()){
-                ans.push_back(mp[target-nums[i]]);
-                ans.push_back(i);
-                return ans;
-            }
+            if(st.find(target-nums[i])!=st.end()) return {mp[target-nums[i]],i};
             st.insert(nums[i]);
             mp[nums[i]]=i;
         }
