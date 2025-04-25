@@ -1,37 +1,37 @@
 class Solution {
 public:
+    int find_start(string a,string s){
+        if(a.size()==0) return -1;
+        string temp=s.substr(0,a.size());
+        for(int i=a.size()-1;i<s.size();i++){
+            if(temp==a) return i;
+            if(i+1<s.size()) temp+=s[i+1];
+            temp.erase(temp.begin());
+        }
+        return s.size();
+    }
+    int find_back(string a,string s){
+        if(a.size()==0) return s.size();
+        string temp=s.substr(s.size()-a.size(),a.size());
+        for(int i=s.size()-a.size();i>=0;i--){
+            if(temp==a) return i;
+            if(i-1>=0) temp.insert(temp.begin(),s[i-1]);
+            temp.pop_back();
+        }
+        return -1;
+    }
     bool hasMatch(string s, string p) {
+        string a="";
+        string b="";
         bool d=true;
-        string s1="";
-        string s2="";
-        for(int i=0;i<p.size();i++){
-            if(p[i]!='*'&&d) s1+=p[i];
-            else if(p[i]!='*'&&!d) s2+=p[i];
-            else d=false;
-        }
-        bool d1= false;
-        bool d2=false;
-        int l=s1.size()-1;
-        int r=s.size()-s2.size();
-        string c1=s.substr(0,s1.size());
-        string c2=s.substr(r,s2.size());
-        while(l<r){
-            if(c1==s1) d1=true;
-            if(c2==s2) d2=true;
-            if(d1&&d2) return true;
-            if(r==0&&!d2) return false;
-            if(l==s.size()-1&&!d1) return false;
-            if(!d2){
-                c2.pop_back();
-                c2.insert(c2.begin(),s[r-1]);
+        for(auto it:p){
+            if(it=='*'){
+                d=false;
+                continue;
             }
-            if(!d1){
-                c1.erase(c1.begin());
-                c1.push_back(s[l+1]);
-            }
-            if(!d1) l++;
-            if(!d2) r--;
+            if(d) a+=it;
+            else b+=it;
         }
-        return false;
+        return find_start(a,s)<find_back(b,s);
     }
 };
