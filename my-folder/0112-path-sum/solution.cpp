@@ -1,12 +1,20 @@
 class Solution {
 public:
-    bool f (TreeNode* root, int targetSum,int sum){
-        if(!root) return false;
+    void f (TreeNode* root, int targetSum,int sum,bool &d){
+        if(d) return;
+        if(!root) return;
         sum+=root->val;
-        if(sum==targetSum&&!root->left&&!root->right) return true;
-        return f(root->left,targetSum,sum)||f(root->right,targetSum,sum);
+        if(sum==targetSum&&!root->left&&!root->right){
+            d=true;
+            return;
+        }
+        f(root->left,targetSum,sum,d);
+        f(root->right,targetSum,sum,d);
+        return;
     }
     bool hasPathSum(TreeNode* root, int targetSum) {
-        return f(root,targetSum,0);
+        bool d=false;
+        f(root,targetSum,0,d);
+        return d;
     }
 };
