@@ -1,47 +1,34 @@
 class Solution {
 public:
+    TreeNode* helper(TreeNode* root){
+        if(!root->left) return root->right;
+        else if(!root->right) return root->left;
+        TreeNode* right=root->right;
+        TreeNode* lastright=root->left;
+        while(lastright->right) lastright=lastright->right;
+        lastright->right=right;
+        return root->left;
+    }
     TreeNode* deleteNode(TreeNode* root, int key) {
-        if (!root) return nullptr; // Base case: empty tree
-
-        if (key < root->val) {
-            // Key is in the left subtree
-            root->left = deleteNode(root->left, key);
-        } else if (key > root->val) {
-            // Key is in the right subtree
-            root->right = deleteNode(root->right, key);
-        } else {
-            // Found the node to delete
-            if (!root->left && !root->right) {
-                // Case 1: No children (leaf node)
-                delete root;
-                return nullptr;
-            } else if (!root->left) {
-                // Case 2: Only right child
-                TreeNode* temp = root->right;
-                delete root;
-                return temp;
-            } else if (!root->right) {
-                // Case 2: Only left child
-                TreeNode* temp = root->left;
-                delete root;
-                return temp;
-            } else {
-                // Case 3: Two children
-                TreeNode* successor = getMin(root->right); // Find inorder successor
-                root->val = successor->val; // Replace value
-                root->right = deleteNode(root->right, successor->val); // Delete successor
+        TreeNode* dummy=root;
+        if(!root) return NULL;
+        if(root->val==key) return helper(root);
+        while(root){
+            if(root->val<key){
+                if(root->right&&root->right->val==key){
+                    root->right=helper(root->right);
+                    break;
+                }
+                else root=root->right;
+            }
+            else{
+                if(root->left&&root->left->val==key){
+                    root->left=helper(root->left);
+                    break;
+                }
+                else root=root->left;
             }
         }
-
-        return root;
-    }
-
-private:
-    TreeNode* getMin(TreeNode* node) {
-        while (node->left) {
-            node = node->left; // Find the leftmost node
-        }
-        return node;
+        return dummy;
     }
 };
-
