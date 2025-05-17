@@ -1,35 +1,26 @@
 class Solution {
 public:
-    void sortColors(vector<int>& nums) {
-        int cnt=0;
-        int cnt1=0;
-        int cnt2=0;
-        for(int i=0;i<nums.size();i++){
-            if(nums[i]==0){
-                cnt++;
+    void sortColors(vector<int>& n) {
+        int cnt0=0,cnt1=0,cnt2=0;
+        for(auto it:n){
+            if(it==0) cnt0++;
+            if(it==1) cnt1++;
+            if(it==2) cnt2++;
+        }
+        for(int i=0;i<n.size();i++){
+            if(cnt0>0){
+                n[i]=0;
+                cnt0--;
             }
-            else if(nums[i]==1){
-                cnt1++;
+            else if(cnt1>0){
+                n[i]=1;
+                cnt1--;
             }
-            else if(nums[i]==2){
-                cnt2++;
+            else if(cnt2>0){
+                n[i]=2;
+                cnt2--;
             }
-            
-
         }
-        nums.clear();
-        for(int j=1;j<=cnt;j++){
-            cout<<'0';
-            nums.push_back(0);
-        }
-        for(int k=1;k<=cnt1;k++){
-            cout<<'1';
-            nums.push_back(1);
-        }
-        for(int r=1;r<=cnt2;r++){
-            cout<<'2';
-            nums.push_back(2);
-        }
-
+        return;
     }
 };
