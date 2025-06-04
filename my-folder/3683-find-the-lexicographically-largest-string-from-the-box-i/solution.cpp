@@ -1,15 +1,14 @@
 class Solution {
 public:
-    string answerString(string word, int numFriends) {
-        int size=word.size()-numFriends+1;
-        if(numFriends==1) return word;
-        string maxi="";
-        for(int i=0;i<numFriends;i++){
-            maxi=max(maxi,word.substr(i,size));
+    string answerString(string word, int n) {
+        if(n==1) return word;
+        int size=word.size()-n+1;
+        string s=word.substr(0,size); string ans=s;
+        for(int i=0;i<word.size();i++){
+            s.erase(s.begin());
+            if (i+size<word.size()) s.push_back(word[i+size]);
+            ans=max(s,ans);
         }
-        for(int j=numFriends;j<word.size();j++){
-            maxi=max(maxi,word.substr(j,word.size()-j));
-        }
-        return maxi;
+        return ans;
     }
 };
