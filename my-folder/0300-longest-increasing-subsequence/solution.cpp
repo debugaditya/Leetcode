@@ -1,20 +1,22 @@
 class Solution {
 public:
+    int f(vector<int>& nums, int index, int prev, vector<vector<int>>& dp) {
+        if (index == nums.size()) return 0;
+        if (dp[index][prev + 1] != -1) return dp[index][prev + 1];
+
+        int pick = 0;
+        if (prev == -1 || nums[prev] < nums[index]) {
+            pick = 1 + f(nums, index + 1, index, dp);
+        }
+        int notpick = f(nums, index + 1, prev, dp);
+
+        return dp[index][prev + 1] = max(pick, notpick);
+    }
+
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        if (n == 0) return 0;
-        vector<int> dp(n, 1);
-        int maxLen = 1;
-        for (int i = 1; i < n; i++) {  
-            for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) { 
-                    dp[i] = max(dp[i], dp[j] + 1);
-                }
-            }
-            maxLen = max(maxLen, dp[i]);
-        }
-
-        return maxLen;
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1)); // prev+1 -> range: [-1, n-1] --> [0, n]
+        return f(nums, 0, -1, dp);
     }
 };
 
