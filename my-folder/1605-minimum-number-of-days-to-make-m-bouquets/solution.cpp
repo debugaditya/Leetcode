@@ -1,45 +1,37 @@
 class Solution {
 public:
-    int minDays(vector<int>& bloom, int m, int k) {
-        // If it's impossible to form m bouquets, return -1
-        
-
-        // Find the minimum and maximum bloom days
-        int low = *min_element(bloom.begin(), bloom.end());
-        int high = *max_element(bloom.begin(), bloom.end());
-        int ans = -1;
-
-        // Binary search for the minimum day
-        while (low <= high) {
-            int mid = (high + low) / 2;
-
-            int bouquet = 0;  // Number of bouquets formed
-            int counter = 0;  // Count of consecutive flowers ready
-
-            for (int days : bloom) {
-                if (days <= mid) {
-                    counter++;
-                    if (counter == k) {
-                        bouquet++;
-                        counter = 0;  // Reset after forming a bouquet
-                    }
-                } else {
-                    counter = 0;  // Reset if flower isn't ready
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int maxe = INT_MIN, mine = INT_MAX;
+        int n = bloomDay.size(), ans = INT_MAX;
+        for(int i=0; i<n; i++){
+            maxe = max(maxe, bloomDay[i]);
+            mine = min(mine, bloomDay[i]);
+        }
+        int low = mine, high = maxe;
+        while(low <= high){
+            int day = (low + high) / 2;
+            int cnt = 0, c = 0;
+            for(int i=0; i<n; i++){
+                if(bloomDay[i] <= day){
+                    c++;
                 }
-
-                if (bouquet >= m) break;  // Early exit if condition met
+                else{
+                    cnt += c / k;
+                    c = 0;
+                }
+                if(cnt >= m) break;
             }
-
-            // Adjust binary search range
-            if (bouquet >= m) {
-                ans = mid;
-                high = mid - 1;  // Look for a smaller day
-            } else {
-                low = mid + 1;  // Look for a larger day
+            cnt += c / k; // Add this line
+            if(cnt >= m) {
+                high = day - 1;
+                ans = day;
+            }
+            else {
+                low = day + 1;
             }
         }
-
+        if(ans == INT_MAX) return -1;
         return ans;
+
     }
 };
-
