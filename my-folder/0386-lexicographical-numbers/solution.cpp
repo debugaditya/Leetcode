@@ -1,13 +1,17 @@
 class Solution {
 public:
+    void f(int num,int n, vector<int>&ans){
+        if(num>n) return;
+        ans.push_back(num);
+        for(int i=0;i<=9;i++){
+            num*=10; num+=i;
+            f(num,n,ans);
+            num/=10;
+        } 
+    }
     vector<int> lexicalOrder(int n) {
-        priority_queue<string>pq;
-        vector<int>ans(n); int k=n-1;
-        for(int i=1;i<=n;i++) pq.push(to_string(i));
-        while(!pq.empty()){
-            ans[k]=stoi(pq.top());
-            pq.pop(); k--;
-        }
+        vector<int>ans;
+        for(int j=1;j<=9;j++) f(j,n,ans);
         return ans;
     }
 };
