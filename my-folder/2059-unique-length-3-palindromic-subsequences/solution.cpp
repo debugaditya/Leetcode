@@ -1,9 +1,8 @@
-#include <bits/stdc++.h>
 class Solution {
 public:
     int countPalindromicSubsequence(string s) {
-        set<char>st;
-        map<char,pair<int,int>>mp;
+        unordered_set<char>st;
+        unordered_map<char,pair<int,int>>mp;
         int ans=0;
         for(int i=0;i<s.size();i++){
             if(st.find(s[i])==st.end()){
