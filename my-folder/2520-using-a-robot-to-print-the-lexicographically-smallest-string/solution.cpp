@@ -8,11 +8,11 @@ public:
             mp[i]=mini;
         }
         for(int i=0;i<s.size();i++){
-            if(t.size()>0&&t.back()<=mp[i]){
-                ans+=t.back(); t.pop_back();
-                i--;
+            while(t.size()>0&&t.back()<=mp[i]){
+                ans+=t.back();
+                t.pop_back();
             }
-            else if(s[i]==mp[i]) ans+=s[i];
+            if(s[i]==mp[i]) ans+=s[i];
             else t+=s[i];
         }
         reverse(t.begin(),t.end()); ans+=t;
