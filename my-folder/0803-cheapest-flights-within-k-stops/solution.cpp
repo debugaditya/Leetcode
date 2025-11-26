@@ -11,7 +11,7 @@ public:
             int price=pq.top().first;
             int node=pq.top().second.first;
             int stops=pq.top().second.second;
-            pq.pop();
+            pq.pop(); if(node==dst) return price;
             if(stops>k) continue;
             for(auto it:graph[node]){
                 if(ans[it.first][stops+1]>price+it.second){
