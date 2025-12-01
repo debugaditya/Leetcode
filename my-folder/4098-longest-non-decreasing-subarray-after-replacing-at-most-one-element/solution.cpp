@@ -11,8 +11,9 @@ public:
             ans=max(ans,mp[i+1]+1); ans=max(ans,cnt+1);
             if(nums[i]<nums[i-1]&&nums[i]<=nums[i+1]&&nums[i-1]<=nums[i+1]) ans=max(mp[i]+cnt,ans);
             if(nums[i]>nums[i-1]&&nums[i]>nums[i+1]&&nums[i-1]<=nums[i+1]) ans=max(mp[i+1]+cnt+1,ans);
+            if(nums[i]<nums[i-1]) ans=max(cnt+1,ans);
             if(nums[i-1]<=nums[i]) cnt++;
-            else cnt=1;
+            else {ans=max(ans,cnt); cnt=1;}
         }
         ans=max(mp[1]+1,ans);
         ans=max(ans,cnt+1);
