@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int lastRemaining(int n) {
+        long long diff=2,start=1,end=n,turn=0;
+        while(diff<=n){
+            if(turn==0) start+=diff/2;
+            else end-=diff/2;
+            long long t=(end-start)/diff+1;
+            if(turn==0) end=start+(t-1)*diff;
+            else start=end-(t-1)*diff;
+            diff*=2; turn=1-turn;
+        }
+        return end;
+    }
+};
