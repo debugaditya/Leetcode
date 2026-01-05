@@ -1,9 +1,9 @@
 class Solution {
 public:
     long long maxMatrixSum(vector<vector<int>>& matrix) {
-        long long sum=0; int mini=INT_MAX; int cnt=0;
-        for(auto it:matrix) for(auto it1:it) {sum+=abs(it1); mini=min(mini,abs(it1)); if(it1<=0) {cnt++;}}
-        if(cnt%2==1) sum-=2*mini;
-        return sum;
+        priority_queue<int,vector<int>,greater<int>>pq; long long ans=0; int neg=INT_MAX,cnt=0; bool d=false;
+        for(auto it:matrix) for(auto it1:it){ans+=abs(it1); if(it1==0) d=true; neg=min(neg,abs(it1)); if(it1<0) cnt++;}
+        if(d) return ans;
+        return ans-1LL*2*neg*(cnt%2);
     }
 };
