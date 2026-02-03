@@ -1,15 +1,13 @@
 class Solution {
 public:
     bool isTrionic(vector<int>& nums) {
-        int p=-1,q=-1;
-        for(int i=1;i<nums.size()-1;i++){
-            if(p==-1&&nums[i]<=nums[i-1]) return false;
-            else if(p!=-1&&q==-1&&nums[i]>=nums[i-1]) return false;
-            else if(p!=-1&&q!=-1&&nums[i]<=nums[i-1]) return false;
-            if(nums[i]>nums[i-1]&&nums[i]>nums[i+1]) p=i;
-            if(nums[i]<nums[i-1]&&nums[i]<nums[i+1]) q=i;
+        bool inc1=true,inc2=false; if(nums[1]<nums[0]) return false;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]==nums[i-1]) return false;
+            if(inc1&&nums[i]<nums[i-1]) inc1=false;
+            else if(!inc1&&nums[i]>nums[i-1]) inc2=true;
+            else if(inc2&&nums[i]<nums[i-1]) return false;
         }
-        if(p==-1||q==-1||nums.back()<=nums[nums.size()-2]) return false;
-        return true;
+        return inc2; 
     }
 };
