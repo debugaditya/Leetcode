@@ -29,10 +29,15 @@ public:
         vector<int> count(3, 0);
         for (int i = 0; i < s.size(); i++) {
             count[s[i] - 'a']++;
+
             int countAB = count[0] - count[1];
             int countAC = count[0] - count[2];
-            if (mp.find({countAB, countAC}) != mp.end()) ans = max(ans, i - mp[{countAB, countAC}]);
-            else mp[{countAB, countAC}] = i;
+
+            if (mp.find({countAB, countAC}) != mp.end()) {
+                ans = max(ans, i - mp[{countAB, countAC}]);
+            } else {
+                mp[{countAB, countAC}] = i;
+            }
         }
 
         return ans;
