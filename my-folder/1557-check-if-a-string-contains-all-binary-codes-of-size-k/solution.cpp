@@ -1,22 +1,16 @@
 class Solution {
 public:
-    int binary_to_int(string &s){
-        int ans=0,power=s.size()-1;
-        for(auto &it:s){
-            if(it!='0') ans+=pow(2,power);
-            power--;
-        }
-        return ans;
-    }
     bool hasAllCodes(string s, int k) {
-        string window=s.substr(0,k); unordered_set<int>st;
-        for(int i=k-1;i<s.size();i++){
-            st.insert(binary_to_int(window));
-            if(i+1<s.size()){
-                window+=s[i+1];
-                window.erase(window.begin());
+        unordered_map<int,int>mp; int cnt=pow(2,k),num=0,p=1;
+        vector<int>powers(k);
+        for(int i=0;i<k;i++){powers[i]=p; p*=2;}
+        for(int i=0;i<s.size();i++){
+            num+=(s[i]-'0')*powers[min(i,k-1)];
+            if(i>=k-1){
+                if(mp[num]==0) {cnt--; if(cnt==0) return true; mp[num]=1;}
+                num/=2;
             }
         }
-        return st.size()==pow(2,k);
+        return false;
     }
 };
