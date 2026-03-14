@@ -1,28 +1,35 @@
 class Solution {
 public:
-    void f(int n,priority_queue<string>&pq,string s){
-        if(s.size()==n){
-            pq.push(s);
+    string getHappyString(int n, int k) {
+        string currentString = "";
+        vector<string> happyStrings;
+        // Generate all happy strings of length n
+        generateHappyStrings(n, currentString, happyStrings);
+
+        // Check if there are at least k happy strings
+        if (happyStrings.size() < k) return "";
+
+        return happyStrings[k - 1];
+    }
+
+private:
+    void generateHappyStrings(int n, string currentString,
+                              vector<string> &happyStrings) {
+        // If the current string has reached the desired length, add it to the
+        // list
+        if (currentString.size() == n) {
+            happyStrings.push_back(currentString);
             return;
         }
-        string temp1=s;
-        string temp2=s;
-        string temp3=s;
-        if(temp1.empty()||s.back()!='a') temp1+='a';
-        if(temp2.empty()||s.back()!='b') temp2+='b';
-        if(temp3.empty()||s.back()!='c') temp3+='c';
-        if(temp1.size()>s.size()) f(n,pq,temp1);
-        if(temp2.size()>s.size()) f(n,pq,temp2);
-        if(temp3.size()>s.size()) f(n,pq,temp3);
-        return;
-    }
-    string getHappyString(int n, int k) {
-        string s="";
-        priority_queue<string>pq;
-        f(n,pq,s);
-        if(pq.size()<k) return s;
-        int rank=pq.size()-k;
-        while(rank--) pq.pop();
-        return pq.top();
+
+        // Try adding each character ('a', 'b', 'c') to the current string
+        for (char currentChar = 'a'; currentChar <= 'c'; currentChar++) {
+            // Skip if the current character is the same as the last character
+            if (currentString.size() > 0 && currentString.back() == currentChar)
+                continue;
+
+            // Recursively generate the next character
+            generateHappyStrings(n, currentString + currentChar, happyStrings);
+        }
     }
 };
