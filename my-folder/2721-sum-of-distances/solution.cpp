@@ -11,9 +11,9 @@ public:
         }
         sum.clear(); freq.clear();
         for(int i=arr.size()-1;i>=0;i--){
-            ans[i]+=sum[arr[i]]-freq[arr[i]]*i;
+            ans[i]+=freq[arr[i]]*(arr.size()-1-i)-sum[arr[i]];
             freq[arr[i]]++;
-            sum[arr[i]]+=i;
+            sum[arr[i]]+=arr.size()-1-i;
         }
         return ans;
     }
