@@ -1,18 +1,18 @@
 class Solution {
 public:
-    bool check(int num){
-        int it=num; bool d=false;
-        while(it>0){
-            int rem=it%10;
-            if(rem!=0&&rem!=1&&rem!=8&&rem!=6&&rem!=9&&rem!=2&&rem!=5) return false;
-            if(rem==6||rem==9||rem==2||rem==5) d=true;
-            it/=10;
+    bool f(int n){
+        bool ans=false;
+        while(n>0){
+            int d=n%10;
+            if(d==3||d==4||d==7) return false;
+            if(d==6||d==9||d==5||d==2) ans=true;
+            n/=10;
         }
-        return d;
+        return ans;
     }
     int rotatedDigits(int n) {
         int cnt=0;
-        for(int i=1;i<=n;i++) if(check(i)) cnt++;
+        for(int i=1;i<=n;i++) if(f(i)) cnt++;
         return cnt;
     }
 };
