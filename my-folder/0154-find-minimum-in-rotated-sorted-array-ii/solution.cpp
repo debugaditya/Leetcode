@@ -8,6 +8,6 @@ public:
             else if(nums[mid] < nums[r]) r=mid;
             else r--;
         }
-        return nums[l];
+        return *min_element(nums.begin(),nums.end());
     }
 };
