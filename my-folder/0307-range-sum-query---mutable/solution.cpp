@@ -19,11 +19,9 @@ public:
         seg[i]=seg[2*i+1]+seg[2*i+2];
     }
     int get(int i,int l,int r,int left,int right){
-        if(left>r||right<l) return 0;
         if(left<=l&&r<=right) return seg[i];
+        if(r<left||l>right) return 0;
         int mid=(l+r)/2;
-        if(mid>right) return get(2*i+1,l,mid,left,right);
-        if(mid<left) return get(2*i+2,mid+1,r,left,right);
         return get(2*i+1,l,mid,left,right)+get(2*i+2,mid+1,r,left,right);
     }
     NumArray(vector<int>& nums) {
