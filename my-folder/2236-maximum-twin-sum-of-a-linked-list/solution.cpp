@@ -1,17 +1,16 @@
 class Solution {
 public:
     int pairSum(ListNode* head) {
-        int i=0,n=0,ans=INT_MIN;
-        ListNode* temp=head;
-        while(temp){
-            n++; temp=temp->next;
+        vector<int>st; int ans=INT_MIN;
+        ListNode* fast=head; ListNode* slow=head;
+        while(fast){
+            st.push_back(slow->val);
+            slow=slow->next;
+            fast=fast->next->next;
         }
-        vector<int>v(n/2);
-        while(head){
-            if(i<n/2) v[i]=head->val;
-            else ans=max(ans,v[n-i-1]+head->val);
-            head=head->next;
-            i++;
+        while(slow){
+            ans=max(slow->val+st.back(),ans);
+            slow=slow->next; st.pop_back();
         }
         return ans;
     }
