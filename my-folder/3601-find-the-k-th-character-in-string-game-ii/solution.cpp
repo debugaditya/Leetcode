@@ -1,22 +1,27 @@
 class Solution {
 public:
+    long long power(int mid){
+        if(mid==0) return 1;
+        long long temp=power(mid/2);
+        long long ans=temp*temp;
+        if(mid%2) ans*=2;
+        return ans;
+    }
     long long f(long long k){
-        int l=0,r=63-__builtin_clzll(k); long long sma=-1;
-        while(l<=r){
-            int mid=(l+r)/2;
-            long long p=1LL<<mid;
-            if(p<=k) {sma=p; l=mid+1;}
-            else r=mid-1;
+        int i=0;
+        while(k>0){
+            i++;
+            k/=2;
         }
-        return sma;
+        return i-1;
     }
     char kthCharacter(long long k, vector<int>& o) {
         if(k==1) return 'a';
-        int cnt=0,i=63-__builtin_clzll(k-1); k--;
+        k--; int cnt=0,i=f(k); 
         while(k>0){
-            k-=f(k);
+            k-=power(f(k));
             if(o[i]==1) cnt++;
-            if(k>0) i=63-__builtin_clzll(k);
+            i=f(k);
         }
         return (cnt%26)+'a';   
     }
