@@ -1,30 +1,26 @@
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
-        sort(nums.begin(), nums.end()); // Sort the input array
-        int n = nums.size();
-        int closestSum = nums[0] + nums[1] + nums[2]; // Initialize closest sum
-        int diff = abs(closestSum - target); // Initialize the difference
-        for (int i = 0; i < n - 2; i++) {
-            int j = i + 1; // Start from the next element
-            int k = n - 1; // Start from the last element
-            while (j < k) { // Loop until j and k meet
-                int sum = nums[i] + nums[j] + nums[k];
-                int currDiff = abs(sum - target);
-                if (currDiff < diff) { // Update closest sum and difference
-                    diff = currDiff;
-                    closestSum = sum;
+        unordered_map<int,int>freq; for(auto it:nums) freq[it]++;
+        sort(nums.begin(),nums.end()); int ans=-1,mini=INT_MAX;
+        for(int i=nums.size()-1;i>=2;i--){
+            if(i+1<nums.size()&&nums[i]==nums[i+1]) continue;
+            freq[nums[i]]--;
+            for(int j=i-1;j>=1;j--){
+                if(j+1<i&&nums[j]==nums[j+1]) continue;
+                freq[nums[j]]--;
+                int idx=lower_bound(nums.begin(),nums.begin()+j-1,target-nums[i]-nums[j])-nums.begin();
+                if(idx<nums.size()&&mini>abs(target-nums[i]-nums[j]-nums[idx])){
+                    mini=abs(target-nums[i]-nums[j]-nums[idx]);
+                    ans=nums[i]+nums[j]+nums[idx];
                 }
-                if (sum == target) { // Exact match found, return the sum
-                    return target;
-                } else if (sum < target) {
-                    j++; // Increment j to increase the sum
-                } else {
-                    k--; // Decrement k to decrease the sum
+                if(idx-1>=0&&mini>abs(target-nums[i]-nums[j]-nums[idx-1])){
+                    mini=abs(target-nums[i]-nums[j]-nums[idx-1]);
+                    ans=nums[i]+nums[j]+nums[idx-1];
                 }
+                freq[nums[j]]++;
             }
-        }
-        return closestSum;
+        } 
+        return ans;
     }
 };
-
