@@ -1,28 +1,12 @@
-#include <bits/stdc++.h>
 class Solution {
 public:
     vector<int> arrayRankTransform(vector<int>& arr) {
-        vector<int>ans;
-        map<int,int>mp;
-        vector<int>arr2(arr.begin(),arr.end());
-        sort(arr.begin(),arr.end());
-        set<int>s1;
-        vector<int>temp;
-        for(int i=0;i<arr.size();i++){
-            if(s1.find(arr[i])==s1.end()){
-                s1.insert(arr[i]);
-                temp.push_back(arr[i]);
-            
-            }
-        }
-        for(int k=0;k<temp.size();k++){
-            mp[temp[k]]=k+1;
-        }
-        for(int j=0;j<arr2.size();j++){
-            ans.push_back(mp[arr2[j]]);
-        }
-        return ans;
-
-        
+        if(arr.size()==0) return arr;
+        vector<int>temp=arr; unordered_map<int,int>mp;
+        sort(temp.begin(),temp.end());
+        mp[temp[0]]=1;
+        for(int i=1;i<temp.size();i++) mp[temp[i]]=mp[temp[i-1]]+(temp[i]>temp[i-1]);
+        for(auto &it:arr) it=mp[it];
+        return arr;
     }
 };
