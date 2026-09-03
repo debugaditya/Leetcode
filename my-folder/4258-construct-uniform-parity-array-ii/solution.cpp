@@ -1,13 +1,12 @@
 class Solution {
 public:
     bool uniformArray(vector<int>& nums1) {
-        int mini=INT_MAX;
-        bool odd=false; 
-        for(auto &it:nums1){
-            if(it%2) odd=true;
-            mini=min(mini,it);
+        int min_odd=INT_MAX,min_eve=INT_MAX;
+        for(auto it:nums1){
+            if(it%2) min_odd=min(it,min_odd);
+            else min_eve=min(it,min_eve);
         }
-        if(mini%2||!odd) return true;
-        return false;
+        if(min_odd==INT_MAX||min_eve==INT_MAX) return true;
+        return min_eve-min_odd>=1;
     }
 };
